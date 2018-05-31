@@ -1,4 +1,18 @@
 import React from 'react'
+import { css } from 'glamor'
+
+const style = {
+  col1: css({
+    width: '120px',
+    backgroundColor: 'lightBlue',
+  }),
+  col2: css({
+    backgroundColor: 'lightYellow',
+  }),
+  col3: css({
+    backgroundColor: 'lightGreen',
+  })
+};
 
 export default ({ data }) => {
   return (
@@ -7,9 +21,9 @@ export default ({ data }) => {
       <table>
         <thead>
           <tr>
-            <td>Date</td>
-            <td>Event</td>
-            <td>Description</td>
+            <td css={style.col1}>Date</td>
+            <td css={style.col2}>Event</td>
+            <td css={style.col3}>Description</td>
           </tr>
         </thead>
         <tbody>

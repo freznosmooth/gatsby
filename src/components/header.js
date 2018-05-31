@@ -1,48 +1,37 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import HeaderNav from './HeaderNav'
+
+import colors from './../utils/colors'
+
+const styles = {
+  header: {
+    background: colors.primary,
+    marginBottom: '1.45rem',
+  },
+  contentWrap: {
+    margin: '0 auto',
+    maxWidth: '960px',
+    padding: '1.45rem',
+  },
+  title: {
+    margin: 0,
+    '>a': {
+      color: 'white',
+      textDecoration: 'none',
+    }
+  }
+}
 
 const Header = ({ siteTitle }) => (
-  <div
-    style={{
-      background: 'rebeccapurple',
-      marginBottom: '1.45rem',
-    }}
-  >
-    <div
-      style={{
-        margin: '0 auto',
-        maxWidth: 960,
-        padding: '1.45rem 1.0875rem',
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: 'white',
-            textDecoration: 'none',
-          }}
-        >
-          {siteTitle}
-        </Link>
+  <header css={styles.header}>
+    <div css={styles.contentWrap}>
+      <h1 css={styles.title}>
+        <Link to="/">{siteTitle}</Link>
       </h1>
-      <nav
-        style={{
-          marginTop: '10px',
-          backgroundColor: '#ffffff',
-          padding: '10px',
-        }}
-        >
-        <Link to="/about-us/">About Us</Link>
-        &nbsp;|&nbsp;
-        <Link to="/counter/">Counter</Link>
-        &nbsp;|&nbsp;
-        <Link to="/events/">Events</Link>
-        &nbsp;|&nbsp;
-        <Link to="/releases/">Releases</Link>
-      </nav>
+      <HeaderNav />
     </div>
-  </div>
+  </header>
 )
 
 export default Header

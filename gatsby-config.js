@@ -1,22 +1,26 @@
+require('dotenv').config()
+
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter test',
+    title: 'JAMstack Starter',
   },
   plugins: [
     {
       resolve: 'gatsby-source-contentful',
       options: {
-        spaceId: 'husc055nilv7',
-        accessToken: '027dc51800fe7f695ad87a2edd45654d93953525752e9ac4e0f87f3698611e4b',
+        spaceId: process.env.CONTENTFUL_SPACE_ID || '',
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
       }
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-plugin-typography`,
       options: {
-        name: `src`,
-        path: `${__dirname}/src/`,
+        pathToConfigModule: `src/utils/typography.js`,
       },
     },
-    'gatsby-plugin-react-helmet'
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    'gatsby-plugin-react-helmet',
+    `gatsby-plugin-glamor`,
   ],
 }
