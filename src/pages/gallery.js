@@ -1,17 +1,51 @@
 import React from 'react'
 import Gallery from 'react-photo-gallery'
+import Lightbox from 'react-images'
 
 class GalleryPage extends React.Component {
+  constructor() {
+    super();
+    this.state = { 
+      currentImage: 0, 
+      lightboxIsOpen: true,
+    }
+  }
   
   render() {
     const { data } = this.props
 
-    this.getImages = () => {
+    this.openLightbox = (event, obj) => {
+      this.setState({
+        currentImage: obj.index,
+        lightboxIsOpen: true,
+      });
+    }
+
+    this.closeLightbox = () => {
+      this.setState({
+        currentImage: 0,
+        lightboxIsOpen: false,
+      });
+    }
+
+    this.gotoPrevious = () => {
+      this.setState({
+        currentImage: this.state.currentImage - 1,
+      });
+    }
+
+    this.gotoNext = () => {
+      this.setState({
+        currentImage: this.state.currentImage + 1,
+      });
+    }
+
+    this.getGalleryImages = () => {
       console.log(data)
       const images = data.allContentfulGallery.edges[0].node.galleryImage
       console.log(images)
 
-      const formattedImageArray = images.map(image => {
+      const galleryImageSet = images.map(image => {
         return Object.assign({}, {
           key: image.id,
           src: image.file.url,
@@ -22,14 +56,37 @@ class GalleryPage extends React.Component {
         })
       })
 
-      console.log(formattedImageArray)
+      console.log(galleryImageSet)
 
-      return formattedImageArray
+      return galleryImageSet
+    }
+
+    this.getLightboxImages = () => {
+      console.log(data)
+      const images = data.allContentfulGallery.edges[0].node.galleryImage
+      console.log(images)
+
+      const lightboxImageSet = images.map(image => {
+        return Object.assign({}, {
+          src: image.file.url,
+        })
+      })
+
+      console.log(lightboxImageSet)
+
+      return lightboxImageSet
     }
     
     return (
       <div>
-        <Gallery photos={this.getImages()} />
+        <Gallery photos={this.getGalleryImages()} />
+        <Lightbox images={this.getLightboxImages()}
+          onClose={this.closeLightbox}
+          onClickPrev={this.gotoPrevious}
+          onClickNext={this.gotoNext}
+          currentImage={this.state.currentImage}
+          isOpen={this.state.lightboxIsOpen}
+        />
       </div>
     )
   }
