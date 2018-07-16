@@ -2,7 +2,7 @@ require('dotenv').config()
 
 module.exports = {
   siteMetadata: {
-    title: 'JAMstack Starter',
+    title: 'Insomnia',
   },
   plugins: [
     {
@@ -22,5 +22,6 @@ module.exports = {
     `gatsby-plugin-sharp`,
     'gatsby-plugin-react-helmet',
     `gatsby-plugin-glamor`,
+    `gatsby-transformer-remark`,
   ],
 }

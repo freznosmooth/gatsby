@@ -1,26 +1,41 @@
 import React from 'react'
+import { css } from 'glamor'
+
+const style = {
+  col1: css({
+    width: '120px',
+    backgroundColor: 'lightBlue',
+  }),
+  col2: css({
+    backgroundColor: 'lightYellow',
+  }),
+  col3: css({
+    backgroundColor: 'lightGreen',
+  })
+};
 
 export default ({ data }) => {
+  console.log('event data', data)
   return (
     <div>
-      <h1>Releases</h1>
+      <h1>Events</h1>
       <table>
         <thead>
           <tr>
-            <td>Date</td>
-            <td>Release Type</td>
-            <td>Description</td>
+            <td css={style.col1}>Date</td>
+            <td css={style.col2}>Event</td>
+            <td css={style.col3}>Description</td>
           </tr>
         </thead>
         <tbody>
-          {data.allContentfulRelease.edges.map(({node}, index) =>
+          {data.allContentfulEvent.edges.map(({node}, index) =>
             <tr key={node.id}>
               <td>{node.date}</td>
               <td>
-                {node.type}
+                <h2>{node.title}</h2>
+                {node.location}
               </td>
               <td>
-                <a href={node.pdf.file.url} target="_blank">{node.title}</a>
                 <p>{node.description.description}</p>
               </td>
             </tr>
@@ -32,25 +47,16 @@ export default ({ data }) => {
 }
 
 export const query = graphql `
-  query Releases {
-    allContentfulRelease {
+  query Events {
+    allContentfulEvent {
       edges {
         node {
           id
           date
-          type
           title
+          location
           description {
-            id
             description
-          }
-          pdf {
-            id
-            file {
-              url
-              fileName
-              contentType
-            }
           }
         }
       }

@@ -4,16 +4,8 @@ import Helmet from 'react-helmet'
 import { TypographyStyle, GoogleFont } from 'react-typography'
 import typography from './../utils/typography'
 
-import Header from '../components/header'
-
-const styles = {
-  main: {
-    margin: '0 auto',
-    maxWidth: 960,
-    padding: '0px 1.45rem',
-    paddingTop: 0,
-  },
-}
+import ContentContainer from '../components/ContentContainer'
+import Header from '../components/Header'
 
 const Layout = ({ children, data }) => (
   <div>
@@ -24,24 +16,41 @@ const Layout = ({ children, data }) => (
       <TypographyStyle typography={typography} />
       <GoogleFont typography={typography} />
     </Helmet>
-    <Header siteTitle={data.site.siteMetadata.title} />
-    <main css={styles.main}>
+    <Header siteTitle={data.site.siteMetadata.title} sitePages={data.allContentfulPage.edges}/>
+    <ContentContainer component={'main'}>
       {children()}
-    </main>
+    </ContentContainer>
   </div>
 )
 
 Layout.propTypes = {
   children: PropTypes.func,
+  data: PropTypes.object.isRequired
 }
 
 export default Layout
 
 export const query = graphql`
-  query SiteTitleQuery {
+  query SiteDataQuery {
     site {
       siteMetadata {
         title
+      }
+    }
+    allContentfulPage(
+      filter: { showInSiteNavigation: { eq: true } }
+      sort: { fields: [ siteNavigationOrder ], order: ASC }
+    ) {
+      edges {
+        node {
+          id
+          slug
+          title
+          parentPage {
+            id
+            slug
+          }
+        }
       }
     }
   }

@@ -29,8 +29,12 @@ const typography = new Typography({
   bodyWeight: '400',
   boldWeight: '700',
   overrideStyles: ({ adjustFontSizeTo, rhythm }, options, styles) => ({
-    'a, a:visited, a:active': {
+    'body': {
       color: colors.primary,
+      backgroundColor: colors.dark,
+    },
+    'a, a:visited, a:active': {
+      color: colors.secondary,
     },
     'a:hover': {
       color: colors.secondary,

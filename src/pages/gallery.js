@@ -1,22 +1,44 @@
-import React from "react";
-import Img from "gatsby-image";
+import React from 'react'
+import Gallery from 'react-photo-gallery'
 
-export default ({data}) => {
-  return (
-    <div>
-      <h1>Gallery</h1>
-      {data.allContentfulGallery.edges.map(({node}, index) =>
-        node.galleryImage.map(image => {
-          return <Img key={image.id} sizes={image.sizes} />
+class GalleryPage extends React.Component {
+  
+  render() {
+    const { data } = this.props
+
+    this.getImages = () => {
+      console.log(data)
+      const images = data.allContentfulGallery.edges[0].node.galleryImage
+      console.log(images)
+
+      const formattedImageArray = images.map(image => {
+        return Object.assign({}, {
+          key: image.id,
+          src: image.file.url,
+          srcSet: image.sizes.srcSet,
+          width: image.file.details.image.width,
+          height: image.file.details.image.height,
+          alt: image.file.fileName,
         })
-      )}
-    </div>
-  )
-};
+      })
 
+      console.log(formattedImageArray)
 
-export const query   = graphql `
-  query CatGalleryImages {
+      return formattedImageArray
+    }
+    
+    return (
+      <div>
+        <Gallery photos={this.getImages()} />
+      </div>
+    )
+  }
+}
+
+export default GalleryPage
+
+export const query = graphql `
+  query Gallery {
     allContentfulGallery {
       edges {
         node {
@@ -24,7 +46,35 @@ export const query   = graphql `
           galleryImage {
             id
             sizes {
-              ...GatsbyContentfulSizes
+              base64
+              aspectRatio
+              src
+              srcSet
+              srcWebp
+              srcSetWebp
+              sizes
+            }
+            resolutions {
+              base64
+              aspectRatio
+              width
+              height
+              src
+              srcSet
+              srcWebp
+              srcSetWebp
+            }
+            file {
+              url
+              fileName
+              contentType
+              details {
+                size
+                image {
+                  width
+                  height
+                }
+              }
             }
           }
         }
