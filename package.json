@@ -1,6 +1,6 @@
 {
   "name": "insomnia",
-  "description": "Insomnia security specialists",
+  "description": "demo",
   "version": "1.0.0",
   "author": "Mike Francis <mike.francis@weareroam.com>",
   "dependencies": {
@@ -21,6 +21,7 @@
     "react-helmet": "^5.2.0",
     "react-images": "^0.5.17",
     "react-photo-gallery": "^6.0.28",
+    "react-responsive-carousel": "^3.1.41",
     "react-typography": "^0.16.13"
   },
   "license": "MIT",

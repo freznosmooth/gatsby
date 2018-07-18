@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react'
 import Gallery from 'react-photo-gallery'
-import Lightbox from 'react-images';
+// import Lightbox from 'react-images'
+import Img from 'gatsby-image'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
-class GalleryPage extends Component {
-  constructor() {
-    super()
+class GalleryPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.images = this.props.data.allContentfulGallery.edges[0].node.galleryImage
+    console.log(this.images)
 
     this.state = { 
       currentImage: 0, 
-      lightboxIsOpen: true,
+      lightboxIsOpen: false,
     }
   }
   
   closeLightbox = () => {
     this.setState({
       currentImage: 0,
+      lightboxIsOpen: false,
+    });
+  }
+  
+  handleClick = (e, obj) => {
+    this.setState({
+      currentImage: obj.index,
       lightboxIsOpen: true,
     });
   }
-  
-  gotoPrevious = () => {
-    this.setState({
-      currentImage: this.state.currentImage - 1,
-    });
-  }
-  
-  gotoNext = () => {
-    this.setState({
-      currentImage: this.state.currentImage + 1,
-    });
-  }
 
-  getGalleryImages = (data) => {
-    const images = data.allContentfulGallery.edges[0].node.galleryImage
-
-    const galleryImageSet = images.map(image => {
+  getGalleryImages = () => {
+    const galleryImageSet = this.images.map(image => {
+      console.log(image)
       return Object.assign({}, {
         key: image.id,
         src: image.file.url,
@@ -50,7 +50,7 @@ class GalleryPage extends Component {
 
   getLightboxImages = () => {
     const images = data.allContentfulGallery.edges[0].node.galleryImage
-    console.log(images)
+    // console.log(images)
 
     const lightboxImageSet = images.map(image => {
       return Object.assign({}, {
@@ -68,15 +68,19 @@ class GalleryPage extends Component {
     
     return (
       <div>
-        <Gallery photos={this.getGalleryImages(data)} onClick={(e, obj) => {console.log('clicked', e, obj)}}/>
-        {/* <Lightbox
-          images={[{ src: 'http://www.placehold.it/800x400' }, { src: 'http://www.placehold.it/600x900' }]}
-          currentImage={this.state.currentImage}
-          isOpen={this.state.lightboxIsOpen}
-          onClickPrev={this.gotoPrevious}
-          onClickNext={this.gotoNext}
-          onClose={this.closeLightbox}
-        /> */}
+        <Gallery photos={this.getGalleryImages()} onClick={(e, obj) => this.handleClick(e, obj)}/>
+        {/* {this.state.lightboxIsOpen && */}
+          <Carousel
+            dynamicHeight
+            showThumbs={false}
+            selectedItem={this.state.currentImage}>
+            {this.images.map(image => (
+              <div  key={image.id} style={{ margin: '0 auto', maxWidth: '80vw', maxHeight: '60vh'}}>
+                <Img sizes={image.sizes} />
+              </div>
+            ))}
+          </Carousel>
+        {/* } */}
       </div>
     )
   }
