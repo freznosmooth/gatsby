@@ -1,8 +1,6 @@
 import React from 'react'
 import Gallery from 'react-photo-gallery'
-// import Lightbox from 'react-images'
-import Img from 'gatsby-image'
-import { Carousel } from 'react-responsive-carousel'
+import Lightbox from 'react-images'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 class GalleryPage extends React.Component {
@@ -10,7 +8,6 @@ class GalleryPage extends React.Component {
     super(props)
 
     this.images = this.props.data.allContentfulGallery.edges[0].node.galleryImage
-    console.log(this.images)
 
     this.state = { 
       currentImage: 0, 
@@ -25,16 +22,27 @@ class GalleryPage extends React.Component {
     });
   }
   
-  handleClick = (e, obj) => {
+  handleGalleryImageClick = (e, obj) => {
     this.setState({
       currentImage: obj.index,
       lightboxIsOpen: true,
     });
   }
 
+  gotoPrevious = () => {
+    this.setState({
+      currentImage: this.state.currentImage - 1,
+    });
+  }
+
+  gotoNext = () => {
+    this.setState({
+      currentImage: this.state.currentImage + 1,
+    });
+  }
+
   getGalleryImages = () => {
     const galleryImageSet = this.images.map(image => {
-      console.log(image)
       return Object.assign({}, {
         key: image.id,
         src: image.file.url,
@@ -49,38 +57,29 @@ class GalleryPage extends React.Component {
   }
 
   getLightboxImages = () => {
-    const images = data.allContentfulGallery.edges[0].node.galleryImage
-    // console.log(images)
-
-    const lightboxImageSet = images.map(image => {
+    const lightboxImageSet = this.images.map(image => {
       return Object.assign({}, {
         src: image.file.url,
+        srcSet: image.sizes.srcSet,
       })
     })
-
-    console.log(lightboxImageSet)
 
     return lightboxImageSet
   }
 
   render() {
-    const { data } = this.props
-    
     return (
       <div>
-        <Gallery photos={this.getGalleryImages()} onClick={(e, obj) => this.handleClick(e, obj)}/>
-        {/* {this.state.lightboxIsOpen && */}
-          <Carousel
-            dynamicHeight
-            showThumbs={false}
-            selectedItem={this.state.currentImage}>
-            {this.images.map(image => (
-              <div  key={image.id} style={{ margin: '0 auto', maxWidth: '80vw', maxHeight: '60vh'}}>
-                <Img sizes={image.sizes} />
-              </div>
-            ))}
-          </Carousel>
-        {/* } */}
+        <Gallery photos={this.getGalleryImages()} onClick={(e, obj) => this.handleGalleryImageClick(e, obj)}/>
+        <Lightbox
+          images={this.getLightboxImages()}
+          currentImage={this.state.currentImage}
+          isOpen={this.state.lightboxIsOpen}
+          onClickPrev={this.gotoPrevious}
+          onClickNext={this.gotoNext}
+          onClose={this.closeLightbox}
+          showImageCount={false}
+        />
       </div>
     )
   }
