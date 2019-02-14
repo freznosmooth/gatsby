@@ -1,12 +1,2 @@
-# Insomnia
-Website.
-
-## Install
-```
-npm install
-
-```
-Then you can run it by:
-```
-npm run develop
-```
+# Gatsby examples
+Gatsby v2 component demos
